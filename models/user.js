@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://127.0.0.1/27017/Mongo_login");
+mongoose.connect("mongodb://127.0.0.1:27017/Mongo_login");
 
 const userSchema = mongoose.Schema({
   userName: String,
-  password: String,
+  password: mongoose.Schema.Types.Mixed,
 });
 
 module.exports = mongoose.model("user", userSchema);

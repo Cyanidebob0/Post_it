@@ -1,39 +1,42 @@
 const express = require("express");
 const path = require("path");
-
 const umodel = require("./models/user");
-const pmodel = require("./models/post");
+const cookie = require("cookie-parser");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(cookie());
 app.set("view engine", "ejs");
 
 app.get("/", (req, res) => {
-  {
-    res.render("index");
+  res.render("signup");
+});
+
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+app.post("/register", async (req, res) => {
+  const { username, name, age, email, password } = req.body;
+  const user1 = await umodel.findOne({ email });
+  if (user1) {
+    return res.status(409).send("User already exists");
   }
+  const hashpass = await bcrypt.hash(password,await bcrypt.genSalt(10));
+    await umodel.create({
+    username,
+    name,
+    age,
+    email,
+    password: hashpass,
+    
+  });
 });
 
-app.get("/create", async (req, res) => {
-  let user = await umodel.create({
-    username: "bhuvan",
-    email: "bhuvanannappa@gmail.com",
-    age: "23",
-  });
-  res.send(user);
-});
-
-app.get("/post/create", async (req, res) => {
-  let post = await pmodel.create({
-    postdata: "hi i am bhuvan",
-    user: "6858ed97b81333ac29810f77",
-  });
-  let user = await umodel.findOne({ _id: "6858ed97b81333ac29810f77" });
-  user.posts.push(post._id);
-  await user.save();
-  res.send({ post, user });
-});
+app.post("/login", (req, res) => {});
 
 app.listen(3000);

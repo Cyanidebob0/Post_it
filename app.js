@@ -1,14 +1,11 @@
 const express = require("express");
-const bcrypt = require("bcrypt");
-const cookie = require("cookie-parser");
-const jwt = require("jsonwebtoken");
 const path = require("path");
-const cookieParser = require("cookie-parser");
+
 const umodel = require("./models/user");
+const pmodel = require("./models/post");
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
@@ -19,22 +16,24 @@ app.get("/", (req, res) => {
   }
 });
 
-app.post("/create", async (req, res) => {
-  const { username, email, password, age } = req.body;
-
-  const cryptpass = await bcrypt.hash(password, await bcrypt.genSalt(10));
-
-  const newUser = await umodel.create({
-    username,
-    email,
-    password: cryptpass,
-    age,
+app.get("/create", async (req, res) => {
+  let user = await umodel.create({
+    username: "bhuvan",
+    email: "bhuvanannappa@gmail.com",
+    age: "23",
   });
+  res.send(user);
+});
 
-  let token = jwt.sign({ email }, "secret");
-  res.cookie("token", token);
-
-  res.send(newUser);
+app.get("/post/create", async (req, res) => {
+  let post = await pmodel.create({
+    postdata: "hi i am bhuvan",
+    user: "6858ed97b81333ac29810f77",
+  });
+  let user = await umodel.findOne({ _id: "6858ed97b81333ac29810f77" });
+  user.posts.push(post._id);
+  await user.save();
+  res.send({ post, user });
 });
 
 app.listen(3000);

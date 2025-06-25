@@ -96,6 +96,15 @@ app.post("/profile", isLoggedin, async (req, res) => {
   res.redirect("/profile");
 });
 
+app.post("/edit/:postid", isLoggedin, async (req, res) => {
+  const user = await pmodel.findOneAndUpdate(
+    { _id: req.params.postid },
+    { title: req.body.title, content: req.body.content },
+    { new: true }
+  );
+  res.redirect("/profile");
+});
+
 function isLoggedin(req, res, next) {
   if (!req.cookies.token || req.cookies.token === "") {
     return res.status(300).send("please login...");

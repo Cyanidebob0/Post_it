@@ -26,9 +26,8 @@ app.get("/logout", (req, res) => {
   res.redirect("/login");
 });
 
-app.get("/logout", (req, res) => {
-  res.cookie("token", "");
-  res.redirect("/login");
+app.get("/feed", isLoggedin, (req, res) => {
+  res.render("feed");
 });
 
 app.get("/profile", isLoggedin, async (req, res) => {

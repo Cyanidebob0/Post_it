@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Feed</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-900 text-white min-h-screen px-4 py-6">
+    <div class="max-w-3xl mx-auto">
+      <!-- Top Buttons -->
+      <div class="flex justify-between items-center mb-6">
+        <a
+          href="/profile"
+          class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded font-medium transition"
+          >Go to Profile</a
+        >
+        <a
+          href="/logout"
+          class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded font-medium transition"
+          >Logout</a
+        >
+      </div>
+
+      <!-- Heading -->
+      <h1 class="text-3xl font-bold text-center mb-6">All Posts</h1>
+
+      <!-- Post 1 -->
+      <div class="bg-gray-800 rounded-lg p-4 mb-4 shadow">
+        <p class="text-sm text-gray-400 mb-2">
+          Author: <span class="text-white font-semibold">Author Name</span>
+        </p>
+        <h2 class="text-xl font-semibold mb-2">Post Title</h2>
+        <p class="text-gray-300">
+          This is the content of the post. Lorem ipsum dolor sit amet
+          consectetur adipisicing elit.
+        </p>
+      </div>
+
+      <!-- Post 2 -->
+      <div class="bg-gray-800 rounded-lg p-4 mb-4 shadow">
+        <p class="text-sm text-gray-400 mb-2">
+          Author: <span class="text-white font-semibold">Another Author</span>
+        </p>
+        <h2 class="text-xl font-semibold mb-2">Second Post Title</h2>
+        <p class="text-gray-300">
+          Another dummy post content here. Replace this with dynamic rendering
+          later.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

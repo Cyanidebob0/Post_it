@@ -40,6 +40,12 @@ app.get("/profile", isLoggedin, async (req, res) => {
   res.render("profile", { details });
 });
 
+app.get("/edit/:postid", isLoggedin, async (req, res) => {
+  const post = await pmodel.findOne({ _id: req.params.postid });
+
+  res.render("edit", { post });
+});
+
 app.post("/register", async (req, res) => {
   const { username, name, age, email, password } = req.body;
   const user = await umodel.findOne({ email });
@@ -98,7 +104,6 @@ function isLoggedin(req, res, next) {
     const data = jwt.verify(req.cookies.token, "secret");
     req.user = data;
     next();
-    console.log(data);
   } catch {
     res.status(403).send("invalid token...");
   }

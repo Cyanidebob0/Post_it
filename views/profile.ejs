@@ -9,7 +9,7 @@
     class="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center px-4"
   >
     <div class="w-full max-w-md">
-      <h3 class="text-2xl  mb-6 text-center">Welcome <%=user.username%> 🤘</h1>
+      <h3 class="text-2xl  mb-6 text-center">Welcome <%=details.username%> 🤘</h1>
       <h1 class="text-3xl font-bold mb-6 text-center">Create a New Post</h1>
       <form action="/profile" method="post" class="flex flex-col gap-4">
         <input
@@ -45,7 +45,20 @@
           class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded transition"
           >Logout</a
         >
+        
       </div>
+      <h1 class="text-3xl font-bold text-center mt-6 mb-6" >My Posts</h1>
+      <%details.posts.forEach((ele)=>{%>
+        <div class="bg-gray-800 rounded-lg p-4 mb-4 shadow">
+          <p class="text-sm text-gray-400 mb-2">
+            Author: <span class="text-white font-semibold"><%=details.name%></span>
+          </p>
+          <h2 class="text-xl font-semibold mb-2"><%=ele.title%></h2>
+          <p class="text-gray-300">
+            <%=ele.content%>
+          </p>
+        </div>
+        <%})%>
     </div>
   </body>
 </html>

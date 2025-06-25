@@ -24,29 +24,16 @@
       <!-- Heading -->
       <h1 class="text-3xl font-bold text-center mb-6">All Posts</h1>
 
-      <!-- Post 1 -->
+      <%post.forEach(ele=>{%>
       <div class="bg-gray-800 rounded-lg p-4 mb-4 shadow">
         <p class="text-sm text-gray-400 mb-2">
-          Author: <span class="text-white font-semibold">Author Name</span>
+          Author:
+          <span class="text-white font-semibold"><%=ele.user.name%></span>
         </p>
-        <h2 class="text-xl font-semibold mb-2">Post Title</h2>
-        <p class="text-gray-300">
-          This is the content of the post. Lorem ipsum dolor sit amet
-          consectetur adipisicing elit.
-        </p>
+        <h2 class="text-xl font-semibold mb-2"><%=ele.title%></h2>
+        <p class="text-gray-300"><%=ele.content%></p>
       </div>
-
-      <!-- Post 2 -->
-      <div class="bg-gray-800 rounded-lg p-4 mb-4 shadow">
-        <p class="text-sm text-gray-400 mb-2">
-          Author: <span class="text-white font-semibold">Another Author</span>
-        </p>
-        <h2 class="text-xl font-semibold mb-2">Second Post Title</h2>
-        <p class="text-gray-300">
-          Another dummy post content here. Replace this with dynamic rendering
-          later.
-        </p>
-      </div>
+      <%})%>
     </div>
   </body>
 </html>

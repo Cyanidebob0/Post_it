@@ -26,14 +26,18 @@ app.get("/logout", (req, res) => {
   res.redirect("/login");
 });
 
-app.get("/feed", isLoggedin, (req, res) => {
-  res.render("feed");
+app.get("/feed", isLoggedin, async (req, res) => {
+  const post = await pmodel.find().populate("user");
+
+  res.render("feed", { post });
 });
 
 app.get("/profile", isLoggedin, async (req, res) => {
-  const user = await umodel.findOne({ email: req.user.email });
+  const details = await umodel
+    .findOne({ email: req.user.email })
+    .populate("posts");
 
-  res.render("profile", { user: user });
+  res.render("profile", { details });
 });
 
 app.post("/register", async (req, res) => {

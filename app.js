@@ -105,6 +105,18 @@ app.post("/edit/:postid", isLoggedin, async (req, res) => {
   res.redirect("/profile");
 });
 
+app.post("/delete/:postid", isLoggedin, async (req, res) => {
+  const deleteduser = await pmodel.findByIdAndDelete({
+    _id: req.params.postid,
+  });
+  await umodel.findOneAndUpdate(
+    { _id: req.user.userid },
+    { $pull: { posts: deleteduser._id } }
+  );
+
+  res.status(200).redirect("/profile");
+});
+
 function isLoggedin(req, res, next) {
   if (!req.cookies.token || req.cookies.token === "") {
     return res.status(300).send("please login...");

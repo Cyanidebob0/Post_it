@@ -26,22 +26,34 @@ app.get("/logout", (req, res) => {
   res.redirect("/login");
 });
 
+app.get("/logout", (req, res) => {
+  res.cookie("token", "");
+  res.redirect("/login");
+});
+
+app.get("/profile", isLoggedin, async (req, res) => {
+  const user = await umodel.findOne({ email: req.user.email });
+
+  res.render("profile", { user: user });
+});
+
 app.post("/register", async (req, res) => {
   const { username, name, age, email, password } = req.body;
-  const user1 = await umodel.findOne({ email });
-  if (user1) {
+  const user = await umodel.findOne({ email });
+  if (user) {
     return res.status(409).send("User already exists");
   }
   const hashpass = await bcrypt.hash(password, await bcrypt.genSalt(10));
-  await umodel.create({
+  const newUser = await umodel.create({
     username,
     name,
     age,
     email,
     password: hashpass,
   });
-  const token = jwt.sign({ email, userid: user._id }, "secret");
+  const token = jwt.sign({ email, userid: newUser._id }, "secret");
   res.cookie("token", token);
+  res.redirect("/profile");
 });
 
 app.post("/login", async (req, res) => {
@@ -55,8 +67,38 @@ app.post("/login", async (req, res) => {
   if (!isMatch) {
     return res.status(500).send("Email or password is incorrect");
   }
-  const token = jwt.sign({ email, userid: user._id });
+  const token = jwt.sign({ email, userid: user._id }, "secret");
   res.cookie("token", token);
+  res.redirect("/profile");
 });
+
+app.post("/profile", isLoggedin, async (req, res) => {
+  const userId = req.user.userid;
+  const { title, content } = req.body;
+  const post = await pmodel.create({
+    title,
+    content,
+    user: userId,
+  });
+  const user = await umodel.findOne({ _id: userId });
+  user.posts.push(post._id);
+  await user.save();
+
+  res.redirect("/profile");
+});
+
+function isLoggedin(req, res, next) {
+  if (!req.cookies.token || req.cookies.token === "") {
+    return res.status(300).send("please login...");
+  }
+  try {
+    const data = jwt.verify(req.cookies.token, "secret");
+    req.user = data;
+    next();
+    console.log(data);
+  } catch {
+    res.status(403).send("invalid token...");
+  }
+}
 
 app.listen(3000);

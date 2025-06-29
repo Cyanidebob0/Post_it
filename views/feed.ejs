@@ -32,6 +32,14 @@
         </p>
         <h2 class="text-xl font-semibold mb-2"><%=ele.title%></h2>
         <p class="text-gray-300"><%=ele.content%></p>
+        <button id="likeBtn" class="rounded-lg mt-4 text-xl">🤍</button>
+
+        <script>
+          const btn = document.getElementById("likeBtn");
+          btn.addEventListener("click", () => {
+            btn.textContent = btn.textContent === "❤️" ? "🤍" : "❤️";
+          });
+        </script>
       </div>
       <%})%>
     </div>

@@ -5,6 +5,7 @@ const cookie = require("cookie-parser");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const pmodel = require("./models/post");
+const upload = require("./config/multerconfig");
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -127,7 +128,6 @@ function isLoggedin(req, res, next) {
     next();
   } catch {
     res.status(403).send("invalid token...");
-    
   }
 }
 
